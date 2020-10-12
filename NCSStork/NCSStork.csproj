@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net472</TargetFramework>
-        <!-- <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath> -->
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -147,5 +147,5 @@
         <HintPath>..\..\..\..\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\bin\Win64_Shipping_Client\TaleWorlds.TwoDimension.Standalone.dll</HintPath>
       </Reference>
     </ItemGroup>
-  <!-- <Import Project="PreBuild.targets" /> -->
+  <Import Project="PreBuild.targets" />
 </Project>
