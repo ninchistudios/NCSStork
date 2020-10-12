@@ -3,9 +3,11 @@
 
   <!-- make all references non-private, so they won't be copied to the output folder -->
   <Target Name="ClearReferenceCopyLocalPaths" AfterTargets="ResolveAssemblyReferences">
+
     <ItemGroup>
       <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" />
     </ItemGroup>
+       
   </Target>
 
 </Project>

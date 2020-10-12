@@ -3,15 +3,18 @@
     <PropertyGroup>
         <TargetFramework>net472</TargetFramework>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <Configurations>Debug;Release</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
       <Optimize>true</Optimize>
       <PlatformTarget>x64</PlatformTarget>
-      <OutputPath>bin\Win64_Shipping_Client\</OutputPath>
+      <OutputPath>..\..\..\..\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\NCSStork\bin\Win64_Shipping_Client</OutputPath>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <Optimize>true</Optimize>
       <PlatformTarget>x64</PlatformTarget>
       <OutputPath>bin\Win64_Shipping_Client\</OutputPath>
     </PropertyGroup>
@@ -147,5 +150,11 @@
         <HintPath>..\..\..\..\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\bin\Win64_Shipping_Client\TaleWorlds.TwoDimension.Standalone.dll</HintPath>
       </Reference>
     </ItemGroup>
-  <Import Project="PreBuild.targets" />
+
+    <Target Name="CopyXML" AfterTargets="AfterBuild">
+      <Copy SourceFiles="SubModule.xml" DestinationFolder="$(OutDir)\..\..\" />
+    </Target>
+  
+    <Import Project="PreBuild.targets" />
+  
 </Project>

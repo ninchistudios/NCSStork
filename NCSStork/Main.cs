@@ -2,6 +2,10 @@
 
 namespace NCSStork {
 
-    public class Main { }
+    public class Main {
+
+        // todo
+
+    }
 
 }
