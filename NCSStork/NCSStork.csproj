@@ -152,8 +152,22 @@
       </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="UIExtenderLib" Version="2.0.0.3" />
+    </ItemGroup>
+
     <Target Name="CopyXML" AfterTargets="AfterBuild">
       <Copy SourceFiles="SubModule.xml" DestinationFolder="$(OutDir)\..\..\" />
+    </Target>
+
+    <Target Name="CleanupDLL" AfterTargets="AfterBuild">
+      <ItemGroup>
+        <FilesToDelete Include="$(OutDir)\TaleWorlds*.dll" />
+        <FilesToDelete Include="$(OutDir)\EOSSDK*.dll" />
+        <FilesToDelete Include="$(OutDir)\Galaxy*.dll" />
+        <FilesToDelete Include="$(OutDir)\Steamworks*.dll" />
+      </ItemGroup>
+      <Delete Files="@(FilesToDelete)" />
     </Target>
   
     <Import Project="PreBuild.targets" />
