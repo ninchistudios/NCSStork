@@ -41,6 +41,9 @@ namespace NCSStork {
         public override XmlDocument GetPrefabExtension() => XmlDocument;
 
         public MapBarPatch() {
+            
+            Debug.Print("NCSStork entered MapBarPatch, loading XML: " + XmlPathHelper.GetXmlPath(Id));
+            
             using (XmlReader reader = XmlReader.Create(XmlPathHelper.GetXmlPath(Id),
                 new XmlReaderSettings {IgnoreComments = true, IgnoreWhitespace = true})) {
                 XmlDocument.Load(reader);
