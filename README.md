@@ -10,7 +10,7 @@
   
 </p>
 
-A very basic mod that does two things:
+A very basic mod that ~does~ will do two things:
 * displays a count of your children in the bottom right map bar so you can be a proud parent
 * provides a baby vending machine if for reasons your spouse (or self) are not getting pregnant or delivering babies
 
