@@ -1,12 +1,18 @@
 ﻿using System.Linq;
+using System.Reflection;
+using System.Xml;
+using Bannerlord.UIExtenderEx;
+using Bannerlord.UIExtenderEx.Attributes;
+using Bannerlord.UIExtenderEx.Prefabs;
+using Bannerlord.UIExtenderEx.ViewModels;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ViewModelCollection.Map;
 using TaleWorlds.Core.ViewModelCollection;
+using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.ObjectSystem;
-using UIExtenderLib;
-using UIExtenderLib.Interface;
+using Path = System.IO.Path;
 
 namespace NCSStork {
 
@@ -15,56 +21,56 @@ namespace NCSStork {
         private UIExtender _extender;
 
         protected override void OnSubModuleLoad() {
+            Debug.Print("NCSStork entered OnSubModuleLoad");
             base.OnSubModuleLoad();
 
             _extender = new UIExtender("NCSStork");
-            _extender.Register();
-        }
-
-        protected override void OnBeforeInitialModuleScreenSetAsRoot() {
-            _extender.Verify();
+            _extender.Register(typeof(Main).Assembly);
+            _extender.Enable();
+            Debug.Print("NCSStork enabled UIExtender");
         }
 
     }
 
-    [UIExtenderLib.Interface.PrefabExtension("MapBar", "descendant::ListPanel[@Id='BottomInfoBar']/Children")]
-    public class PrefabExtension : PrefabExtensionInsertPatch {
+    [PrefabExtension("MapBar", "descendant::ListPanel[@Id='BottomInfoBar']/Children")]
+    public class MapBarPatch : PrefabExtensionInsertPatch {
 
+        public sealed override string Id => "NCSStorkButton";
         public override int Position => PositionLast;
-        public override string Name => "NCSStorkButton";
+        private XmlDocument XmlDocument { get; } = new XmlDocument();
+        public override XmlDocument GetPrefabExtension() => XmlDocument;
+
+        public MapBarPatch() {
+            using (XmlReader reader = XmlReader.Create(XmlPathHelper.GetXmlPath(Id),
+                new XmlReaderSettings {IgnoreComments = true, IgnoreWhitespace = true})) {
+                XmlDocument.Load(reader);
+                Debug.Print("NCSStork loaded MapBarPatch");
+            }
+
+            Debug.Assert(XmlDocument.HasChildNodes, $"Failed to parse extension ({Id}) XML!");
+        }
 
     }
 
-    [UIExtenderLib.Interface.ViewModelMixin]
-    public class ViewModelMixin : BaseViewModelMixin<MapInfoVM> {
+    [ViewModelMixin]
+    public class MapInfoMixin : BaseViewModelMixin<MapInfoVM> {
 
-        private int _childrenAmount;
-        private string _childrenTooltip;
+        private int _childrenAmount = 99;
+        private string _storkTooltip = "Test Stork";
 
         [DataSourceProperty]
-        public BasicTooltipViewModel StorkAmountHint => new BasicTooltipViewModel(() => _childrenTooltip);
+        public BasicTooltipViewModel NCSStorkChildrenAmountHint => new BasicTooltipViewModel(() => _storkTooltip);
 
-        [DataSourceProperty] public string ChildrenAmount => "" + _childrenAmount;
+        [DataSourceProperty] public string NCSStorkChildrenAmount => "" + _childrenAmount;
 
-        public ViewModelMixin(MapInfoVM vm) : base(vm) { }
+        public MapInfoMixin(MapInfoVM vm) : base(vm) { }
+        
+    }
 
-        public override void OnRefresh() {
-            // TODO this is counting horses not children
-            var children =
-                MobileParty.MainParty.ItemRoster.Where(i =>
-                    i.EquipmentElement.Item.ItemCategory.Id == new MBGUID(671088673));
-            var newTooltip = children.Aggregate("Children: ",
-                (s, element) => $"{s}\n{element.EquipmentElement.Item.Name}: {element.Amount}");
+    internal static class XmlPathHelper {
 
-            if (newTooltip != _childrenTooltip) {
-                _childrenAmount = children.Sum(item => item.Amount);
-                _childrenTooltip = newTooltip;
-
-                if (_vm.TryGetTarget(out var vm)) {
-                    vm.OnPropertyChanged(nameof(ChildrenAmount));
-                }
-            }
-        }
+        public static string GetXmlPath(string id) => Path.Combine(Utilities.GetBasePath(), "Modules", "NCSStork",
+            "GUI", "PrefabExtensions", $"{id}.xml");
 
     }
 

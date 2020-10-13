@@ -186,7 +186,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="UIExtenderLib" Version="2.0.0.3" />
+      <PackageReference Include="Bannerlord.UIExtenderEx" Version="1.0.3" />
     </ItemGroup>
 
     <Target Name="CopyXML" AfterTargets="AfterBuild">
@@ -200,6 +200,7 @@
         <FilesToDelete Include="$(OutDir)\Galaxy*.dll" />
         <FilesToDelete Include="$(OutDir)\Steamworks*.dll" />
         <!-- <FilesToDelete Include="$(OutDir)\0Harmony*.dll" /> -->
+        <FilesToDelete Include="$(OutDir)\Bannerlord.UIExtenderEx.dll" />
         <FilesToDelete Include="$(OutDir)\Sandbox*.dll" />
         <FilesToDelete Include="$(OutDir)\StoryMode*.dll" />
       </ItemGroup>
