@@ -12,7 +12,7 @@
 
 A very basic mod that does two things:
 * displays a count of your children in the bottom right map bar so you can be a proud parent
-* provides a baby vending machine if for ~reasons~ your spouse (or self) are not getting pregnant or delivering babies
+* provides a baby vending machine if for reasons your spouse (or self) are not getting pregnant or delivering babies
 
 Essentially I had the second problem and rather than wait for a patch, decided to nuke it from orbit by learning how to do Bannerlord mods. It's the only way to be sure.
 
