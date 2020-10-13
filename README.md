@@ -1,16 +1,10 @@
 # NCSStork
-<p align="center">
-  <!--
-  <a href="https://github.com/ninchistudios/NCSStork" alt="Logo">
-  <img src="https://github.com/ninchistudios/NCSStork/blob/dev/resources/Butter.png?raw=true" /></a>
-  </br>
-  -->
-  <a href="https://github.com/ninchistudios/NCSStork" alt="Lines Of Code">
-  <img src="https://tokei.rs/b1/github/ninchistudios/NCSStork?category=code" /></a>
-  
-</p>
 
-A very basic mod that ~does~ will do two things:
+<a href="https://github.com/ninchistudios/NCSStork" alt="Lines Of Code">
+  <img src="https://tokei.rs/b1/github/ninchistudios/NCSStork?category=code" />
+</a>
+
+A very basic *Mount & Blade 2: Bannerlord* mod that ~does~ will do two things:
 * displays a count of your children in the bottom right map bar so you can be a proud parent
 * provides a baby vending machine if for reasons your spouse (or self) are not getting pregnant or delivering babies
 
