@@ -7,6 +7,7 @@ using Bannerlord.UIExtenderEx.Prefabs;
 using Bannerlord.UIExtenderEx.ViewModels;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ViewModelCollection.Map;
+using TaleWorlds.Core;
 using TaleWorlds.Core.ViewModelCollection;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
@@ -30,6 +31,14 @@ namespace NCSStork {
             Debug.Print("NCSStork enabled UIExtender");
         }
 
+        protected override void OnGameStart(Game game, IGameStarter gameStarter) {
+            base.OnGameStart(game, gameStarter);
+            if (game.GameType is Campaign) {
+                CampaignGameStarter campaignStarter = (CampaignGameStarter) gameStarter;
+                campaignStarter.AddBehavior(new NCSStorkCampaignBehavior());
+            }
+        }
+
     }
 
     [PrefabExtension("MapBar", "descendant::ListPanel[@Id='BottomInfoBar']/Children")]
@@ -41,9 +50,9 @@ namespace NCSStork {
         public override XmlDocument GetPrefabExtension() => XmlDocument;
 
         public MapBarPatch() {
-            
+
             Debug.Print("NCSStork entered MapBarPatch, loading XML: " + XmlPathHelper.GetXmlPath(Id));
-            
+
             using (XmlReader reader = XmlReader.Create(XmlPathHelper.GetXmlPath(Id),
                 new XmlReaderSettings {IgnoreComments = true, IgnoreWhitespace = true})) {
                 XmlDocument.Load(reader);
@@ -58,8 +67,8 @@ namespace NCSStork {
     [ViewModelMixin]
     public class MapInfoMixin : BaseViewModelMixin<MapInfoVM> {
 
-        private int _childrenAmount = 99;
-        private string _storkTooltip = "Test Stork";
+        private int _childrenAmount = 0;
+        private string _storkTooltip = "Children";
 
         [DataSourceProperty]
         public BasicTooltipViewModel NCSStorkChildrenAmountHint => new BasicTooltipViewModel(() => _storkTooltip);
@@ -67,7 +76,12 @@ namespace NCSStork {
         [DataSourceProperty] public string NCSStorkChildrenAmount => "" + _childrenAmount;
 
         public MapInfoMixin(MapInfoVM vm) : base(vm) { }
-        
+
+        public override void OnRefresh() {
+            base.OnRefresh();
+
+        }
+
     }
 
     internal static class XmlPathHelper {
