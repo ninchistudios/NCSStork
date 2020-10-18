@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System;
 using System.Xml;
 using Bannerlord.UIExtenderEx;
 using Bannerlord.UIExtenderEx.Attributes;
 using Bannerlord.UIExtenderEx.Prefabs;
 using Bannerlord.UIExtenderEx.ViewModels;
+using SandBox.Quests.QuestBehaviors;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.ViewModelCollection.Map;
 using TaleWorlds.Core;
@@ -12,7 +12,6 @@ using TaleWorlds.Core.ViewModelCollection;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.ObjectSystem;
 using Path = System.IO.Path;
 
 namespace NCSStork {
@@ -67,19 +66,36 @@ namespace NCSStork {
     [ViewModelMixin]
     public class MapInfoMixin : BaseViewModelMixin<MapInfoVM> {
 
-        private int _childrenAmount = 0;
+        private int _childrenAmount = -1;
         private string _storkTooltip = "Children";
+        private readonly MapInfoVM _viewModel;
 
         [DataSourceProperty]
         public BasicTooltipViewModel NCSStorkChildrenAmountHint => new BasicTooltipViewModel(() => _storkTooltip);
 
-        [DataSourceProperty] public string NCSStorkChildrenAmount => "" + _childrenAmount;
+        // [DataSourceProperty] public string NCSStorkChildrenAmount => "" + _childrenAmount;
+        [DataSourceProperty] 
+        public string NCSStorkChildrenAmount {
+            get => "" + this._childrenAmount;
+            
+        }
 
-        public MapInfoMixin(MapInfoVM vm) : base(vm) { }
+        public MapInfoMixin(MapInfoVM vm) : base(vm) {
+            Debug.Print("NCS: In MapInfoMixin constructor");
+            if (ViewModel != null) {
+                _viewModel = ViewModel;
+            } else {
+                throw new NullReferenceException("MapInfoVM ViewModel is null");
+            }
+        }
 
         public override void OnRefresh() {
-            base.OnRefresh();
-
+            var childcount = Hero.MainHero.Children.Count;
+            if (childcount != _childrenAmount) {
+                Debug.Print("NCS: updating child count");
+                _childrenAmount = childcount;
+                _viewModel.OnPropertyChanged(nameof(NCSStorkChildrenAmount));
+            }
         }
 
     }

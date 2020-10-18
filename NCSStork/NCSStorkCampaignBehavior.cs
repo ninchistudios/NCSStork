@@ -15,9 +15,18 @@ namespace NCSStork {
         }
         
         private void OnGameLoaded(CampaignGameStarter gameSystemInitializer) {
-            Debug.Print("In NCSStorkCampaignBehavior.OnGameLoaded");
+            Debug.Print("NCS: In NCSStorkCampaignBehavior.OnGameLoaded");
             Dictionary<Hero, int> heirs = Hero.MainHero.Clan.GetHeirApparents();
-            Debug.Print("Heirs: " + heirs.Count);
+            Debug.Print("NCS: Heirs: " + heirs.Count);
+            foreach (KeyValuePair<Hero, int> heir in heirs) {
+                Debug.Print("NCS: heir: " + heir.Key.Name);
+            }
+            List<Hero> children = Hero.MainHero.Children;
+            Debug.Print("NCS: Children: " + children.Count);
+            foreach (Hero child in children) {
+                Debug.Print("NCS: child: " + child.Name);
+            }
+            
         }
 
     }
